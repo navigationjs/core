@@ -1,0 +1,45 @@
+{
+  "name": "@navigationjs/core",
+  "version": "0.1.0",
+  "description": "Small and well-tested navigation",
+  "main": "dist/index.js",
+  "author": "Ivan Zotov <me@ivanzotov.com> (http://ivanzotov.com/)",
+  "license": "MIT",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/navigationjs/core.git"
+  },
+  "bugs": {
+    "url": "https://github.com/navigationjs/core/issues"
+  },
+  "homepage": "https://navigationjs.github.io/core/",
+  "keywords": [
+    "navigation"
+  ],
+  "scripts": {
+    "test": "jest",
+    "debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
+    "format": "prettier --write '__tests__/**/*.js' 'src/**/*.js' 'index.js'"
+  },
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "@babel/core": "^7.7.5",
+    "@babel/plugin-proposal-class-properties": "^7.7.4",
+    "@babel/preset-env": "^7.7.6",
+    "babel-jest": "^24.9.0",
+    "eslint": "^6.6.0",
+    "jest": "^24.9.0",
+    "prettier": "^1.16.4",
+    "rollup": "^1.27.9",
+    "rollup-plugin-babel": "^4.3.3"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "dependencies": {
+    "@railsmob/events": "^0.1.3"
+  }
+}
