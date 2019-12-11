@@ -1,5 +1,7 @@
 import { Navigation } from '../../../src/Navigation';
 
+jest.unmock('@railsmob/events');
+
 describe('Navigation', () => {
   describe('.lock', () => {
     it('should set locked to true', () => {

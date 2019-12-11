@@ -1,6 +1,8 @@
 import { Navigation } from '../../../src/Navigation';
 import events from '@railsmob/events';
-import Test from '../../../src/Test';
+import Base from '../../../src/Base';
+
+jest.unmock('@railsmob/events');
 
 describe('Navigation', () => {
   beforeEach(() => (events.listeners = {}));
@@ -14,8 +16,8 @@ describe('Navigation', () => {
 
     it('should lock navigation immediately and unlock at the end', async () => {
       const navigation = new Navigation();
-      const navigator = new Test.Navigator('navigator');
-      const scene = new Test.Scene('scene');
+      const navigator = new Base.Navigator('navigator');
+      const scene = new Base.Scene('scene');
       navigator.addScenes(scene);
       navigation.addNavigators(navigator);
       await navigation.go('navigator', 'scene');
@@ -28,7 +30,7 @@ describe('Navigation', () => {
 
     it('should resolve if history is empty', async () => {
       const navigation = new Navigation();
-      const navigator = new Test.Navigator('navigator');
+      const navigator = new Base.Navigator('navigator');
       navigation.addNavigators(navigator);
       expect.assertions(1);
       expect(navigation.history).toEqual([]);
@@ -41,8 +43,8 @@ describe('Navigation', () => {
 
     it('should call back on the navigator', async () => {
       const navigation = new Navigation();
-      const navigator = new Test.Navigator('navigator');
-      const scene = new Test.Scene('scene');
+      const navigator = new Base.Navigator('navigator');
+      const scene = new Base.Scene('scene');
       navigator.addScenes(scene);
       navigation.addNavigators(navigator);
       await navigation.go('navigator', 'scene');
@@ -53,11 +55,11 @@ describe('Navigation', () => {
 
     it('should push navigator name if it was provided', async () => {
       const navigation = new Navigation();
-      const navigator1 = new Test.Navigator('navigator1');
-      const navigator2 = new Test.Navigator('navigator2');
-      const scene1 = new Test.Scene('scene1');
-      const scene2 = new Test.Scene('scene2');
-      const scene3 = new Test.Scene('scene3');
+      const navigator1 = new Base.Navigator('navigator1');
+      const navigator2 = new Base.Navigator('navigator2');
+      const scene1 = new Base.Scene('scene1');
+      const scene2 = new Base.Scene('scene2');
+      const scene3 = new Base.Scene('scene3');
       navigator1.addScenes(scene1, scene2);
       navigator2.addScenes(scene3);
       navigation.addNavigators(navigator1, navigator2);
@@ -72,9 +74,9 @@ describe('Navigation', () => {
 
     it('should remove navigator from history if navigator history is empty', async () => {
       const navigation = new Navigation();
-      const navigator = new Test.Navigator('navigator');
-      const scene1 = new Test.Scene('scene1');
-      const scene2 = new Test.Scene('scene2');
+      const navigator = new Base.Navigator('navigator');
+      const scene1 = new Base.Scene('scene1');
+      const scene2 = new Base.Scene('scene2');
       navigator.addScenes(scene1, scene2);
       navigation.addNavigators(navigator);
       await navigation.go('navigator', 'scene1');
@@ -88,9 +90,9 @@ describe('Navigation', () => {
 
     it('should emit will_blur, will_focus, blur and focus events', async () => {
       const navigation = new Navigation();
-      const navigator = new Test.Navigator('navigator');
-      const scene1 = new Test.Scene('scene1');
-      const scene2 = new Test.Scene('scene2');
+      const navigator = new Base.Navigator('navigator');
+      const scene1 = new Base.Scene('scene1');
+      const scene2 = new Base.Scene('scene2');
       navigator.addScenes(scene1, scene2);
       navigation.addNavigators(navigator);
 
@@ -150,8 +152,8 @@ describe('Navigation', () => {
 
     it('should emit will_blur and blur events', async () => {
       const navigation = new Navigation();
-      const navigator = new Test.Navigator('navigator');
-      const scene = new Test.Scene('scene');
+      const navigator = new Base.Navigator('navigator');
+      const scene = new Base.Scene('scene');
       navigator.addScenes(scene);
       navigation.addNavigators(navigator);
 
@@ -186,9 +188,9 @@ describe('Navigation', () => {
 
     it('should emit events before navigation is unlocked', async () => {
       const navigation = new Navigation();
-      const navigator = new Test.Navigator('navigator');
-      const scene1 = new Test.Scene('scene1');
-      const scene2 = new Test.Scene('scene2');
+      const navigator = new Base.Navigator('navigator');
+      const scene1 = new Base.Scene('scene1');
+      const scene2 = new Base.Scene('scene2');
       navigator.addScenes(scene1, scene2);
       navigation.addNavigators(navigator);
 

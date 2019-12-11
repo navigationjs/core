@@ -1,5 +1,5 @@
 import { Navigation } from '../../../src/Navigation';
-import Test from '../../../src/Test';
+import Base from '../../../src/Base';
 
 describe('Navigation', () => {
   describe('.push', () => {
@@ -14,8 +14,8 @@ describe('Navigation', () => {
     });
     it('should add navigator to the end', () => {
       const navigation = new Navigation();
-      const navigator1 = new Test.Navigator('navigator1');
-      const navigator2 = new Test.Navigator('navigator2');
+      const navigator1 = new Base.Navigator('navigator1');
+      const navigator2 = new Base.Navigator('navigator2');
       navigation.addNavigators(navigator1, navigator2);
       navigation.push('navigator1');
       expect(navigation.history).toEqual(['navigator1']);
@@ -25,8 +25,8 @@ describe('Navigation', () => {
 
     it('should remove navigator from history if it was included', () => {
       const navigation = new Navigation();
-      const navigator1 = new Test.Navigator('navigator1');
-      const navigator2 = new Test.Navigator('navigator2');
+      const navigator1 = new Base.Navigator('navigator1');
+      const navigator2 = new Base.Navigator('navigator2');
       navigation.addNavigators(navigator1, navigator2);
       navigation.push('navigator1');
       navigation.push('navigator2');

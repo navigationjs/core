@@ -1,6 +1,8 @@
 import { Navigation } from '../../../src/Navigation';
-import Test from '../../../src/Test';
+import Base from '../../../src/Base';
 import events from '@railsmob/events';
+
+jest.unmock('@railsmob/events');
 
 describe('Navigation', () => {
   beforeEach(() => (events.listeners = {}));
@@ -14,8 +16,8 @@ describe('Navigation', () => {
 
     it('should lock navigation immediately and unlock at the end', async () => {
       const navigation = new Navigation();
-      const navigator = new Test.Navigator('navigator');
-      const scene = new Test.Scene('scene');
+      const navigator = new Base.Navigator('navigator');
+      const scene = new Base.Scene('scene');
       navigator.addScenes(scene);
       navigation.addNavigators(navigator);
 
@@ -38,8 +40,8 @@ describe('Navigation', () => {
 
     it('should add navigator to history', async () => {
       const navigation = new Navigation();
-      const navigator = new Test.Navigator('navigator');
-      const scene = new Test.Scene('scene');
+      const navigator = new Base.Navigator('navigator');
+      const scene = new Base.Scene('scene');
       navigator.addScenes(scene);
       navigation.addNavigators(navigator);
       await navigation.go('navigator', 'scene');
@@ -48,10 +50,10 @@ describe('Navigation', () => {
 
     it('should move navigator to the end in history if it is already exist', async () => {
       const navigation = new Navigation();
-      const navigator1 = new Test.Navigator('navigator1');
-      const navigator2 = new Test.Navigator('navigator2');
-      const scene1 = new Test.Scene('scene1');
-      const scene2 = new Test.Scene('scene2');
+      const navigator1 = new Base.Navigator('navigator1');
+      const navigator2 = new Base.Navigator('navigator2');
+      const scene1 = new Base.Scene('scene1');
+      const scene2 = new Base.Scene('scene2');
       navigator1.addScenes(scene1);
       navigator2.addScenes(scene2);
       navigation.addNavigators(navigator1, navigator2);
@@ -63,8 +65,8 @@ describe('Navigation', () => {
 
     it('should run go on the navigator', async () => {
       const navigation = new Navigation();
-      const navigator = new Test.Navigator('navigator');
-      const scene = new Test.Scene('scene');
+      const navigator = new Base.Navigator('navigator');
+      const scene = new Base.Scene('scene');
       navigator.addScenes(scene);
       navigation.addNavigators(navigator);
       navigator.go = jest.fn();
@@ -74,8 +76,8 @@ describe('Navigation', () => {
 
     it('should push navigator to history after go is completed', async () => {
       const navigation = new Navigation();
-      const navigator = new Test.Navigator('navigator');
-      const scene = new Test.Scene('scene');
+      const navigator = new Base.Navigator('navigator');
+      const scene = new Base.Scene('scene');
       navigator.addScenes(scene);
       navigation.addNavigators(navigator);
       const promise = navigation.go('navigator', 'scene');
@@ -86,9 +88,9 @@ describe('Navigation', () => {
 
     it('should emit blur and focus events after go is resolved', async () => {
       const navigation = new Navigation();
-      const navigator = new Test.Navigator('navigator');
-      const scene1 = new Test.Scene('scene1');
-      const scene2 = new Test.Scene('scene2');
+      const navigator = new Base.Navigator('navigator');
+      const scene1 = new Base.Scene('scene1');
+      const scene2 = new Base.Scene('scene2');
       navigator.addScenes(scene1, scene2);
       navigation.addNavigators(navigator);
 
@@ -147,9 +149,9 @@ describe('Navigation', () => {
 
     it('should emit events before navigation is unlocked', async () => {
       const navigation = new Navigation();
-      const navigator = new Test.Navigator('navigator');
-      const scene1 = new Test.Scene('scene1');
-      const scene2 = new Test.Scene('scene2');
+      const navigator = new Base.Navigator('navigator');
+      const scene1 = new Base.Scene('scene1');
+      const scene2 = new Base.Scene('scene2');
       navigator.addScenes(scene1, scene2);
       navigation.addNavigators(navigator);
 

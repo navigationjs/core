@@ -1,14 +1,16 @@
 import { Navigation } from '../../../src/Navigation';
-import Test from '../../../src/Test';
+import Base from '../../../src/Base';
+
+jest.unmock('@railsmob/events');
 
 describe('Navigation', () => {
   describe('.reset', () => {
     it('should clean history', async () => {
       const navigation = new Navigation();
-      const navigator1 = new Test.Navigator('navigator1');
-      const scene1 = new Test.Scene('scene1');
-      const navigator2 = new Test.Navigator('navigator2');
-      const scene2 = new Test.Scene('scene2');
+      const navigator1 = new Base.Navigator('navigator1');
+      const scene1 = new Base.Scene('scene1');
+      const navigator2 = new Base.Navigator('navigator2');
+      const scene2 = new Base.Scene('scene2');
       navigator1.addScenes(scene1);
       navigator2.addScenes(scene2);
       navigation.addNavigators(navigator1, navigator2);
@@ -21,10 +23,10 @@ describe('Navigation', () => {
 
     it('should invoke reset on each navigator', async () => {
       const navigation = new Navigation();
-      const navigator1 = new Test.Navigator('navigator1');
-      const scene1 = new Test.Scene('scene1');
-      const navigator2 = new Test.Navigator('navigator2');
-      const scene2 = new Test.Scene('scene2');
+      const navigator1 = new Base.Navigator('navigator1');
+      const scene1 = new Base.Scene('scene1');
+      const navigator2 = new Base.Navigator('navigator2');
+      const scene2 = new Base.Scene('scene2');
       navigator1.addScenes(scene1);
       navigator2.addScenes(scene2);
       navigation.addNavigators(navigator1, navigator2);

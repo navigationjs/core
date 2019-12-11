@@ -17,7 +17,6 @@ export class Navigation {
   locked = false;
   lockCounter = 0;
 
-  // aliases
   on = (eventId, ...other) => events.on(`navigation_${eventId}`, ...other);
   once = (eventId, ...other) => events.once(`navigation_${eventId}`, ...other);
   off = (eventId, ...other) => events.off(`navigation_${eventId}`, ...other);

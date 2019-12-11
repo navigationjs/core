@@ -1,5 +1,7 @@
 import { Navigation } from '../../../src/Navigation';
 
+jest.unmock('@railsmob/events');
+
 describe('Navigation', () => {
   describe('.wait', () => {
     it('should resolves when navigation is unlocked', async () => {
