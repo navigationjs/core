@@ -9,6 +9,11 @@ export default class Value {
     VALUE: 'value',
   };
 
+  /**
+   * @param {string} name
+   * @param {number} [value=0]
+   * @param {number} [duration=0]
+   */
   constructor(name, value = 0, duration = defaultDuration) {
     this.__id = ++id;
     this.name = name;
@@ -16,13 +21,28 @@ export default class Value {
     this.duration = duration;
   }
 
-  emit = (eventName, ...other) =>
-    events.emit(`navigation_${eventName}:${this.__id}`, ...other);
-  on = (eventName, ...other) =>
-    events.on(`navigation_${eventName}:${this.__id}`, ...other);
-  off = (eventName, ...other) =>
-    events.off(`navigation_${eventName}:${this.__id}`, ...other);
+  /**
+   * @param {string} eventName
+   * @param {any} args
+   */
+  emit = (eventName, args) =>
+    events.emit(`navigation_${eventName}:${this.__id}`, args);
+  /**
+   * @param {string} eventName
+   * @param {Function} fn
+   */
+  on = (eventName, fn) => events.on(`navigation_${eventName}:${this.__id}`, fn);
+  /**
+   * @param {string} eventName
+   * @param {Function} fn
+   */
+  off = (eventName, fn) =>
+    events.off(`navigation_${eventName}:${this.__id}`, fn);
 
+  /**
+   * @param {number} value
+   * @param {number} [duration=0]
+   */
   to = (value, duration = this.duration) => {
     const params = {
       __id: this.__id,

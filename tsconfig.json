@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "outFile": "./typings/index.d.ts",
+    "allowJs": true,
+    "checkJs": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "declaration": true,
+    "emitDeclarationOnly": true
+  },
+  "files": ["./@navigationjs/core.js"]
+}
