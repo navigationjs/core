@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outFile": "./typings/index.d.ts",
+    "outDir": "./types/",
     "allowJs": true,
     "checkJs": true,
     "noImplicitAny": true,
@@ -8,5 +8,5 @@
     "declaration": true,
     "emitDeclarationOnly": true
   },
-  "files": ["./@navigationjs/core.js"]
+  "files": ["./src/index.js"]
 }

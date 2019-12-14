@@ -5,7 +5,7 @@ import { terser } from 'rollup-plugin-terser';
 export default [
   // CommonJS
   {
-    input: '@navigationjs/core.js',
+    input: 'src/index.js',
     output: {
       file: 'lib/index.js',
       format: 'cjs',
@@ -15,7 +15,7 @@ export default [
   },
   // ES
   {
-    input: '@navigationjs/core.js',
+    input: 'src/index.js',
     output: {
       file: 'es/index.js',
       format: 'es',
@@ -25,11 +25,11 @@ export default [
   },
   // UMD Dev
   {
-    input: '@navigationjs/core.js',
+    input: 'src/index.js',
     output: {
       file: 'dist/index.js',
       format: 'umd',
-      name: 'NavigationJsCore',
+      name: 'Navigation',
       indent: false,
     },
     plugins: [
@@ -41,11 +41,11 @@ export default [
   },
   // UMD Prod
   {
-    input: '@navigationjs/core.js',
+    input: 'src/index.js',
     output: {
       file: 'dist/index.min.js',
       format: 'umd',
-      name: 'NavigationJsCore',
+      name: 'Navigation',
       indent: false,
     },
     plugins: [

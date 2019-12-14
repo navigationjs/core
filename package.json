@@ -1,11 +1,11 @@
 {
   "name": "@navigationjs/core",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Small and well-tested navigation",
   "main": "lib/index.js",
   "unpkg": "dist/index.js",
   "module": "es/index.js",
-  "types": "./typings/index.d.ts",
+  "types": "./types/index.d.ts",
   "author": "Ivan Zotov <me@ivanzotov.com> (http://ivanzotov.com/)",
   "license": "MIT",
   "private": false,
@@ -22,18 +22,19 @@
   ],
   "scripts": {
     "test": "jest",
-    "build": "rollup -c",
-    "debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
-    "tsc": "tsc -p .",
+    "build": "rollup -c && rsync -av --include='*.flow' --include='*/' --exclude='*' ./types/ lib/;",
+    "types": "tsc -p . && yarn run flowgen",
     "flow": "flow",
-    "flowgen": "flowgen typings/index.d.ts -o flow-typed/npm/@navigationjs/core_v0.x.x.js.flow",
-    "format": "prettier --write \"{__tests__,@navigationjs,src,typings}/**/*.{js,ts}\" \"./*.{js,json}\""
+    "flowgen": "for file in $(find ./types -name *.d.ts -type f); do flowgen ${file} --add-flow-header -o ${file/.d.ts/.js.flow}; done;",
+    "debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
+    "format": "prettier --write \"{__tests__,src,types}/**/*.{js,ts}\" \"./*.{js,json}\""
   },
   "files": [
     "src",
+    "es",
+    "lib",
     "dist",
-    "typings",
-    "flow-typed"
+    "types"
   ],
   "devDependencies": {
     "@babel/core": "^7.7.5",
