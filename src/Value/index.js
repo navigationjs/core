@@ -1,14 +1,14 @@
 import events from '@railsmob/events';
 
+export const EVENTS = {
+  WILL_VALUE: 'will_value',
+  VALUE: 'value',
+};
+
 const defaultDuration = 0;
 let id = 0;
 
 export default class Value {
-  static EVENTS = {
-    WILL_VALUE: 'will_value',
-    VALUE: 'value',
-  };
-
   /**
    * @param {string} name
    * @param {number} [value=0]
@@ -51,10 +51,10 @@ export default class Value {
       duration,
     };
 
-    this.emit(Value.EVENTS.WILL_VALUE, params);
+    this.emit(EVENTS.WILL_VALUE, params);
     return new Promise(resolve => {
       this.value = value;
-      this.emit(Value.EVENTS.VALUE, params);
+      this.emit(EVENTS.VALUE, params);
       resolve();
     });
   };

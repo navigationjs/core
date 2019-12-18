@@ -1,8 +1,8 @@
+export namespace EVENTS {
+  export const WILL_VALUE: string;
+  export const VALUE: string;
+}
 export default class Value {
-  static EVENTS: {
-    WILL_VALUE: string;
-    VALUE: string;
-  };
   /**
    * @param {string} name
    * @param {number} [value=0]

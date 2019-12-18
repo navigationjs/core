@@ -1,9 +1,9 @@
 import events from '@railsmob/events';
-import Value from '../../src/Value';
+import Value, { EVENTS } from '../../src/Value';
 
 describe('Value', () => {
   it('should has a list of events', () => {
-    expect(Value.EVENTS).toEqual({
+    expect(EVENTS).toEqual({
       WILL_VALUE: 'will_value',
       VALUE: 'value',
     });

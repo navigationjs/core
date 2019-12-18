@@ -1,4 +1,4 @@
-import { Navigation } from '../../src/Navigation';
+import { Navigation, EVENTS } from '../../src/Navigation';
 
 describe('navigation', () => {
   it('should has a navigators as an empty object', () => {
@@ -6,15 +6,14 @@ describe('navigation', () => {
     expect(navigation.navigators).toEqual({});
   });
 
-  it('should has static EVENTS list', () => {
-    expect(Navigation.EVENTS).toEqual({
+  it('should has EVENTS list', () => {
+    expect(EVENTS).toEqual({
       LOCK: 'lock',
       UNLOCK: 'unlock',
       WILL_BLUR: 'will_blur',
       BLUR: 'blur',
       WILL_FOCUS: 'will_focus',
       FOCUS: 'focus',
-      ANDROID_BACK: 'android_back',
     });
   });
 });

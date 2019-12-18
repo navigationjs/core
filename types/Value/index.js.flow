@@ -5,13 +5,16 @@
  * @flow
  */
 
-declare export default class Value {
-  static EVENTS: {
-    WILL_VALUE: string,
-    VALUE: string,
-    ...
-  };
+declare var EVENTS: typeof npm$namespace$EVENTS;
 
+declare var npm$namespace$EVENTS: {|
+  WILL_VALUE: typeof EVENTS$WILL_VALUE,
+  VALUE: typeof EVENTS$VALUE
+|};
+declare export var EVENTS$WILL_VALUE: string;
+
+declare export var EVENTS$VALUE: string;
+declare export default class Value {
   /**
    * @param {string} name
    * @param {number} [value]

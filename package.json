@@ -1,6 +1,6 @@
 {
   "name": "@navigationjs/core",
-  "version": "0.2.4",
+  "version": "0.3.0",
   "description": "Small and well-tested navigation",
   "main": "lib/index.js",
   "unpkg": "dist/index.js",

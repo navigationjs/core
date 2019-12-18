@@ -1,21 +1,20 @@
 import events from '@railsmob/events';
 import { toId } from '../helpers';
 
+export const EVENTS = {
+  LOCK: 'lock',
+  UNLOCK: 'unlock',
+  WILL_BLUR: 'will_blur',
+  BLUR: 'blur',
+  WILL_FOCUS: 'will_focus',
+  FOCUS: 'focus',
+};
+
 /**
  * @typedef {import("../Base/Navigator").default} Navigator
  */
 
 export class Navigation {
-  static EVENTS = {
-    LOCK: 'lock',
-    UNLOCK: 'unlock',
-    WILL_BLUR: 'will_blur',
-    BLUR: 'blur',
-    WILL_FOCUS: 'will_focus',
-    FOCUS: 'focus',
-    ANDROID_BACK: 'android_back',
-  };
-
   /**
    * @type {{ [name: string]: Navigator }}
    */
@@ -57,21 +56,21 @@ export class Navigation {
   lock = () => {
     this.locked = true;
     this.lockCounter++;
-    this.emit(Navigation.EVENTS.LOCK);
+    this.emit(EVENTS.LOCK);
   };
 
   unlock = () => {
     this.lockCounter--;
     if (this.lockCounter === 0) {
       this.locked = false;
-      this.emit(Navigation.EVENTS.UNLOCK);
+      this.emit(EVENTS.UNLOCK);
     }
   };
 
   wait = () => {
     if (!this.locked) return Promise.resolve();
     return new Promise(resolve => {
-      this.once(Navigation.EVENTS.UNLOCK, () => resolve());
+      this.once(EVENTS.UNLOCK, () => resolve());
     });
   };
 
@@ -93,11 +92,11 @@ export class Navigation {
 
     if (prevId !== nextId) {
       if (prevId) {
-        this.emit(events.id(Navigation.EVENTS.WILL_BLUR, prevId), {
+        this.emit(events.id(EVENTS.WILL_BLUR, prevId), {
           id: prevId,
         });
       }
-      this.emit(events.id(Navigation.EVENTS.WILL_FOCUS, nextId), {
+      this.emit(events.id(EVENTS.WILL_FOCUS, nextId), {
         id: nextId,
       });
     }
@@ -107,11 +106,11 @@ export class Navigation {
 
     if (prevId !== nextId) {
       if (prevId) {
-        this.emit(events.id(Navigation.EVENTS.BLUR, prevId), {
+        this.emit(events.id(EVENTS.BLUR, prevId), {
           id: prevId,
         });
       }
-      this.emit(events.id(Navigation.EVENTS.FOCUS, nextId), {
+      this.emit(events.id(EVENTS.FOCUS, nextId), {
         id: nextId,
       });
     }
@@ -149,7 +148,7 @@ export class Navigation {
     const prevId = this.id();
 
     if (prevId) {
-      this.emit(events.id(Navigation.EVENTS.WILL_BLUR, prevId), {
+      this.emit(events.id(EVENTS.WILL_BLUR, prevId), {
         id: prevId,
       });
     }
@@ -167,7 +166,7 @@ export class Navigation {
       : null;
 
     if (nextId) {
-      this.emit(events.id(Navigation.EVENTS.WILL_FOCUS, nextId), {
+      this.emit(events.id(EVENTS.WILL_FOCUS, nextId), {
         id: nextId,
       });
     }
@@ -176,13 +175,13 @@ export class Navigation {
     if (navigator.history.length === 0) this.history.pop();
 
     if (prevId) {
-      this.emit(events.id(Navigation.EVENTS.BLUR, prevId), {
+      this.emit(events.id(EVENTS.BLUR, prevId), {
         id: prevId,
       });
     }
 
     if (nextId) {
-      this.emit(events.id(Navigation.EVENTS.FOCUS, nextId), {
+      this.emit(events.id(EVENTS.FOCUS, nextId), {
         id: nextId,
       });
     }
@@ -200,15 +199,6 @@ export class Navigation {
   };
 
   current = () => this.history[this.history.length - 1];
-
-  /**
-   * @param {string} id
-   */
-  androidBack = id => {
-    this.emit(Navigation.EVENTS.ANDROID_BACK + events.SEP + id, {
-      id,
-    });
-  };
 
   id = () => {
     const currentNavigator = this.current();

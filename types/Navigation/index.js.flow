@@ -5,21 +5,31 @@
  * @flow
  */
 
+declare var EVENTS: typeof npm$namespace$EVENTS;
+
+declare var npm$namespace$EVENTS: {|
+  LOCK: typeof EVENTS$LOCK,
+  UNLOCK: typeof EVENTS$UNLOCK,
+  WILL_BLUR: typeof EVENTS$WILL_BLUR,
+  BLUR: typeof EVENTS$BLUR,
+  WILL_FOCUS: typeof EVENTS$WILL_FOCUS,
+  FOCUS: typeof EVENTS$FOCUS
+|};
+declare export var EVENTS$LOCK: string;
+
+declare export var EVENTS$UNLOCK: string;
+
+declare export var EVENTS$WILL_BLUR: string;
+
+declare export var EVENTS$BLUR: string;
+
+declare export var EVENTS$WILL_FOCUS: string;
+
+declare export var EVENTS$FOCUS: string;
 /**
  * @typedef {$PropertyType<$Exports<"../Base/Navigator">, "default">} Navigator
  */
 declare export class Navigation {
-  static EVENTS: {
-    LOCK: string,
-    UNLOCK: string,
-    WILL_BLUR: string,
-    BLUR: string,
-    WILL_FOCUS: string,
-    FOCUS: string,
-    ANDROID_BACK: string,
-    ...
-  };
-
   /**
  * @type {{
 [name: string]: Navigator,...
@@ -94,11 +104,6 @@ declare export class Navigation {
   back: (navigatorName: string, duration: number) => Promise<void>;
   reset: () => Promise<void[]>;
   current: () => string;
-
-  /**
-   * @param {string} id
-   */
-  androidBack: (id: string) => void;
   id: () => string | void;
 }
 declare var _default: Navigation;

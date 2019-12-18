@@ -1,16 +1,15 @@
+export namespace EVENTS {
+  export const LOCK: string;
+  export const UNLOCK: string;
+  export const WILL_BLUR: string;
+  export const BLUR: string;
+  export const WILL_FOCUS: string;
+  export const FOCUS: string;
+}
 /**
  * @typedef {import("../Base/Navigator").default} Navigator
  */
 export class Navigation {
-  static EVENTS: {
-    LOCK: string;
-    UNLOCK: string;
-    WILL_BLUR: string;
-    BLUR: string;
-    WILL_FOCUS: string;
-    FOCUS: string;
-    ANDROID_BACK: string;
-  };
   /**
    * @type {{ [name: string]: Navigator }}
    */
@@ -71,10 +70,6 @@ export class Navigation {
   back: (navigatorName: string, duration: number) => Promise<void>;
   reset: () => Promise<void[]>;
   current: () => string;
-  /**
-   * @param {string} id
-   */
-  androidBack: (id: string) => void;
   id: () => string | undefined;
 }
 declare var _default: Navigation;
