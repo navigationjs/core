@@ -88,6 +88,52 @@ describe('Navigation', () => {
       expect(navigation.history).toEqual([]);
     });
 
+    it('should focus on last scene in previous navigator', async () => {
+      const navigation = new Navigation();
+      const navigator1 = new Base.Navigator('navigator1');
+      const navigator2 = new Base.Navigator('navigator2');
+      const scene1 = new Base.Scene('scene1');
+      const scene2 = new Base.Scene('scene2');
+      const scene3 = new Base.Scene('scene3');
+      navigator1.addScenes(scene1, scene2);
+      navigator2.addScenes(scene3);
+      navigation.addNavigators(navigator1, navigator2);
+      await navigation.go('navigator1', 'scene1');
+      await navigation.go('navigator1', 'scene2');
+      await navigation.go('navigator2', 'scene3');
+
+      expect.assertions(5);
+
+      expect(navigation.history).toEqual(['navigator1', 'navigator2']);
+
+      const willFocus = jest.fn();
+
+      const promiseWillFocus = new Promise(resolve => {
+        navigation.on('will_focus:navigator1/scene2', () => {
+          expect(navigation.history).toEqual(['navigator1', 'navigator2']);
+          willFocus();
+          resolve();
+        });
+      });
+
+      const focus = jest.fn();
+
+      const promiseFocus = new Promise(resolve => {
+        navigation.on('focus:navigator1/scene2', () => {
+          expect(navigation.history).toEqual(['navigator1']);
+          focus();
+          resolve();
+        });
+      });
+
+      await navigation.back();
+
+      await Promise.all([promiseWillFocus, promiseFocus]);
+
+      expect(navigation.history).toEqual(['navigator1']);
+      expect(navigator1.history).toEqual(['scene1', 'scene2']);
+    });
+
     it('should emit will_blur, will_focus, blur and focus events', async () => {
       const navigation = new Navigation();
       const navigator = new Base.Navigator('navigator');

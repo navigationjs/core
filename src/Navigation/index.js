@@ -153,15 +153,18 @@ export class Navigation {
       });
     }
 
-    const nextNavigator =
-      navigator.history.length <= 1
-        ? this.navigators[this.history[this.history.length - 2]]
-        : navigator;
+    const navigatorWillChange = navigator.history.length <= 1;
+
+    const nextNavigator = navigatorWillChange
+      ? this.navigators[this.history[this.history.length - 2]]
+      : navigator;
 
     const nextId = nextNavigator
       ? toId(
           nextNavigator.name,
-          nextNavigator.history[nextNavigator.history.length - 2]
+          nextNavigator.history[
+            nextNavigator.history.length - (navigatorWillChange ? 1 : 2)
+          ]
         )
       : null;
 
