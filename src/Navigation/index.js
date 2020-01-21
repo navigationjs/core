@@ -4,6 +4,8 @@ import { toId } from '../helpers';
 export const EVENTS = {
   LOCK: 'lock',
   UNLOCK: 'unlock',
+  WILL_CHANGE: 'will_change',
+  CHANGE: 'change',
   WILL_BLUR: 'will_blur',
   BLUR: 'blur',
   WILL_FOCUS: 'will_focus',
@@ -15,16 +17,25 @@ export const EVENTS = {
  */
 
 export class Navigation {
-  /**
-   * @type {{ [name: string]: Navigator }}
-   */
-  navigators = {};
-  /**
-   * @type {Array<string>}
-   */
-  history = [];
-  locked = false;
-  lockCounter = 0;
+  constructor() {
+    /**
+     * @type {{ [name: string]: Navigator }}
+     */
+    this.navigators = {};
+    /**
+     * @type {Array<string>}
+     */
+    this.history = [];
+    this.locked = false;
+    this.lockCounter = 0;
+
+    this.on(EVENTS.WILL_CHANGE, ({ prevId, nextId }) =>
+      this.__willChange(prevId, nextId)
+    );
+    this.on(EVENTS.CHANGE, ({ prevId, nextId }) =>
+      this.__change(prevId, nextId)
+    );
+  }
 
   /**
    * @param {string} eventId
@@ -75,45 +86,27 @@ export class Navigation {
   };
 
   /**
-   * @param {string} navigatorName
-   * @param {string} sceneName
+   * @param {string} newNavigatorName
+   * @param {string} newSceneName
    * @param {number} duration
    */
-  go = async (navigatorName, sceneName, duration) => {
+  go = async (newNavigatorName, newSceneName, duration) => {
     if (this.locked) return Promise.resolve();
 
     this.lock();
 
-    const prevId = this.id();
-    const nextId = toId(navigatorName, sceneName);
-
-    const navigator = this.navigators[navigatorName];
+    const navigator = this.navigators[newNavigatorName];
     if (!navigator) return Promise.reject();
 
-    if (prevId !== nextId) {
-      if (prevId) {
-        this.emit(events.id(EVENTS.WILL_BLUR, prevId), {
-          id: prevId,
-        });
-      }
-      this.emit(events.id(EVENTS.WILL_FOCUS, nextId), {
-        id: nextId,
-      });
-    }
+    const prevId = this.id();
+    const nextId = toId(newNavigatorName, newSceneName);
 
-    if (sceneName) await navigator.go(sceneName, duration);
-    this.push(navigatorName);
+    this.emit(EVENTS.WILL_CHANGE, { prevId, nextId });
 
-    if (prevId !== nextId) {
-      if (prevId) {
-        this.emit(events.id(EVENTS.BLUR, prevId), {
-          id: prevId,
-        });
-      }
-      this.emit(events.id(EVENTS.FOCUS, nextId), {
-        id: nextId,
-      });
-    }
+    if (newSceneName) await navigator.go(newSceneName, duration);
+    this.push(newNavigatorName);
+
+    this.emit(EVENTS.CHANGE, { prevId, nextId });
 
     this.unlock();
 
@@ -149,12 +142,6 @@ export class Navigation {
 
     const prevId = this.id();
 
-    if (prevId) {
-      this.emit(events.id(EVENTS.WILL_BLUR, prevId), {
-        id: prevId,
-      });
-    }
-
     const navigatorWillChange = navigator.history.length <= 1;
 
     const nextNavigator = navigatorWillChange
@@ -170,26 +157,12 @@ export class Navigation {
         )
       : null;
 
-    if (nextId) {
-      this.emit(events.id(EVENTS.WILL_FOCUS, nextId), {
-        id: nextId,
-      });
-    }
+    this.emit(EVENTS.WILL_CHANGE, { prevId, nextId });
 
     await navigator.back(duration);
     if (navigator.history.length === 0) this.history.pop();
 
-    if (prevId) {
-      this.emit(events.id(EVENTS.BLUR, prevId), {
-        id: prevId,
-      });
-    }
-
-    if (nextId) {
-      this.emit(events.id(EVENTS.FOCUS, nextId), {
-        id: nextId,
-      });
-    }
+    this.emit(EVENTS.CHANGE, { prevId, nextId });
 
     this.unlock();
 
@@ -211,6 +184,44 @@ export class Navigation {
     const currentScene = this.navigators[currentNavigator].current();
     if (!currentScene) return;
     return toId(currentNavigator, currentScene);
+  };
+
+  /**
+   * @param {string?} prevId
+   * @param {string?} nextId
+   */
+  __willChange = (prevId, nextId) => {
+    if (prevId === nextId) return;
+
+    if (prevId) {
+      this.emit(events.id(EVENTS.WILL_BLUR, prevId), {
+        id: prevId,
+      });
+    }
+    if (nextId) {
+      this.emit(events.id(EVENTS.WILL_FOCUS, nextId), {
+        id: nextId,
+      });
+    }
+  };
+
+  /**
+   * @param {string?} prevId
+   * @param {string?} nextId
+   */
+  __change = (prevId, nextId) => {
+    if (prevId === nextId) return;
+
+    if (prevId) {
+      this.emit(events.id(EVENTS.BLUR, prevId), {
+        id: prevId,
+      });
+    }
+    if (nextId) {
+      this.emit(events.id(EVENTS.FOCUS, nextId), {
+        id: nextId,
+      });
+    }
   };
 }
 

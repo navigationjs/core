@@ -10,6 +10,8 @@ describe('navigation', () => {
     expect(EVENTS).toEqual({
       LOCK: 'lock',
       UNLOCK: 'unlock',
+      WILL_CHANGE: 'will_change',
+      CHANGE: 'change',
       WILL_BLUR: 'will_blur',
       BLUR: 'blur',
       WILL_FOCUS: 'will_focus',
