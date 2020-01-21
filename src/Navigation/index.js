@@ -132,18 +132,20 @@ export class Navigation {
     this.history.push(navigatorName);
   };
 
+  pop = () => {
+    return this.history.pop();
+  };
+
   /**
-   * @param {string} navigatorName
    * @param {number} duration
    */
-  back = async (navigatorName, duration) => {
+  back = async duration => {
     if (this.locked) return Promise.resolve();
 
     this.lock();
 
-    if (navigatorName) this.push(navigatorName);
     const navigator = this.navigators[this.current()];
-    if (!navigator) return Promise.reject();
+    if (!navigator) return Promise.resolve();
 
     const prevId = this.id();
 

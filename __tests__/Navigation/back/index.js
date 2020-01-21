@@ -35,7 +35,7 @@ describe('Navigation', () => {
       expect.assertions(1);
       expect(navigation.history).toEqual([]);
       try {
-        await navigation.back('navigator');
+        await navigation.back();
       } catch (e) {
         expect(e).toBeUndefined();
       }
@@ -49,27 +49,8 @@ describe('Navigation', () => {
       navigation.addNavigators(navigator);
       await navigation.go('navigator', 'scene');
       navigator.back = jest.fn();
-      await navigation.back('navigator');
+      await navigation.back();
       expect(navigator.back).toHaveBeenCalledTimes(1);
-    });
-
-    it('should push navigator name if it was provided', async () => {
-      const navigation = new Navigation();
-      const navigator1 = new Base.Navigator('navigator1');
-      const navigator2 = new Base.Navigator('navigator2');
-      const scene1 = new Base.Scene('scene1');
-      const scene2 = new Base.Scene('scene2');
-      const scene3 = new Base.Scene('scene3');
-      navigator1.addScenes(scene1, scene2);
-      navigator2.addScenes(scene3);
-      navigation.addNavigators(navigator1, navigator2);
-      await navigation.go('navigator1', 'scene1');
-      await navigation.go('navigator1', 'scene2');
-      await navigation.go('navigator2', 'scene3');
-      expect(navigation.history).toEqual(['navigator1', 'navigator2']);
-      await navigation.back('navigator1');
-      expect(navigation.history).toEqual(['navigator2', 'navigator1']);
-      expect(navigator1.history).toEqual(['scene1']);
     });
 
     it('should remove navigator from history if navigator history is empty', async () => {
@@ -82,9 +63,9 @@ describe('Navigation', () => {
       await navigation.go('navigator', 'scene1');
       await navigation.go('navigator', 'scene2');
       expect(navigation.history).toEqual(['navigator']);
-      await navigation.back('navigator');
+      await navigation.back();
       expect(navigation.history).toEqual(['navigator']);
-      await navigation.back('navigator');
+      await navigation.back();
       expect(navigation.history).toEqual([]);
     });
 
