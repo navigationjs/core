@@ -29,12 +29,18 @@ export class Navigation {
     this.locked = false;
     this.lockCounter = 0;
 
-    this.on(EVENTS.WILL_CHANGE, ({ prevId, nextId }) =>
-      this.__willChange(prevId, nextId)
-    );
-    this.on(EVENTS.CHANGE, ({ prevId, nextId }) =>
-      this.__change(prevId, nextId)
-    );
+    /**
+     * @param {{ prevId: ?string, nextId: ?string }} param
+     */
+    const willChangeBind = ({ prevId, nextId }) =>
+      this.__willChange(prevId, nextId);
+    this.on(EVENTS.WILL_CHANGE, willChangeBind);
+
+    /**
+     * @param {{ prevId: ?string, nextId: ?string }} param
+     */
+    const changeBind = ({ prevId, nextId }) => this.__change(prevId, nextId);
+    this.on(EVENTS.CHANGE, changeBind);
   }
 
   /**
