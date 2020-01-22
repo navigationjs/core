@@ -1,12 +1,7 @@
 import { Navigation } from '../../../src/Navigation';
 import Base from '../../../src/Base';
-import events from '@railsmob/events';
-
-jest.unmock('@railsmob/events');
 
 describe('Navigation', () => {
-  beforeEach(() => (events.listeners = {}));
-
   describe('.go', () => {
     it('should resolve immediately if navigation is locked', () => {
       const navigation = new Navigation();
@@ -84,125 +79,6 @@ describe('Navigation', () => {
       expect(navigation.history).toEqual([]);
       await promise;
       expect(navigation.history).toEqual(['navigator']);
-    });
-
-    it('should emit blur and focus events after go is resolved', async () => {
-      const navigation = new Navigation();
-      const navigator = new Base.Navigator('navigator');
-      const scene1 = new Base.Scene('scene1');
-      const scene2 = new Base.Scene('scene2');
-      navigator.addScenes(scene1, scene2);
-      navigation.addNavigators(navigator);
-
-      await navigation.go('navigator', 'scene1');
-
-      expect.assertions(10);
-
-      const willBlur = jest.fn();
-      const willFocus = jest.fn();
-
-      const promiseWillBlur = new Promise(resolve => {
-        navigation.on('will_blur:navigator/scene1', () => {
-          expect(navigation.history).toEqual(['navigator']);
-          expect(navigator.history).toEqual(['scene1']);
-          willBlur();
-          resolve();
-        });
-      });
-
-      const promiseWillFocus = new Promise(resolve => {
-        navigation.on('will_focus:navigator/scene2', () => {
-          expect(navigation.history).toEqual(['navigator']);
-          expect(navigator.history).toEqual(['scene1']);
-          willFocus();
-          resolve();
-        });
-      });
-
-      const promiseBlur = new Promise(resolve => {
-        navigation.on('blur:navigator/scene1', () => {
-          expect(willBlur).toBeCalled();
-          expect(navigation.history).toEqual(['navigator']);
-          expect(navigator.history).toEqual(['scene1', 'scene2']);
-          resolve();
-        });
-      });
-
-      const promiseFocus = new Promise(resolve => {
-        navigation.on('focus:navigator/scene2', () => {
-          expect(willFocus).toBeCalled();
-          expect(navigation.history).toEqual(['navigator']);
-          expect(navigator.history).toEqual(['scene1', 'scene2']);
-          resolve();
-        });
-      });
-
-      await navigation.go('navigator', 'scene2');
-
-      await Promise.all([
-        promiseWillBlur,
-        promiseWillFocus,
-        promiseBlur,
-        promiseFocus,
-      ]);
-    });
-
-    it('should emit events before navigation is unlocked', async () => {
-      const navigation = new Navigation();
-      const navigator = new Base.Navigator('navigator');
-      const scene1 = new Base.Scene('scene1');
-      const scene2 = new Base.Scene('scene2');
-      navigator.addScenes(scene1, scene2);
-      navigation.addNavigators(navigator);
-
-      await navigation.go('navigator', 'scene1');
-
-      expect.assertions(8);
-
-      const promiseWillBlur = new Promise(resolve => {
-        navigation.on('will_blur:navigator/scene1', async () => {
-          expect(navigation.locked).toBe(true);
-          await navigation.wait();
-          expect(navigation.locked).toBe(false);
-          resolve();
-        });
-      });
-
-      const promiseWillFocus = new Promise(resolve => {
-        navigation.on('will_focus:navigator/scene2', async () => {
-          expect(navigation.locked).toBe(true);
-          await navigation.wait();
-          expect(navigation.locked).toBe(false);
-          resolve();
-        });
-      });
-
-      const promiseBlur = new Promise(resolve => {
-        navigation.on('blur:navigator/scene1', async () => {
-          expect(navigation.locked).toBe(true);
-          await navigation.wait();
-          expect(navigation.locked).toBe(false);
-          resolve();
-        });
-      });
-
-      const promiseFocus = new Promise(resolve => {
-        navigation.on('focus:navigator/scene2', async () => {
-          expect(navigation.locked).toBe(true);
-          await navigation.wait();
-          expect(navigation.locked).toBe(false);
-          resolve();
-        });
-      });
-
-      await navigation.go('navigator', 'scene2');
-
-      await Promise.all([
-        promiseWillBlur,
-        promiseWillFocus,
-        promiseBlur,
-        promiseFocus,
-      ]);
     });
   });
 });

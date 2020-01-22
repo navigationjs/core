@@ -4,12 +4,6 @@ import { toId } from '../helpers';
 export const EVENTS = {
   LOCK: 'lock',
   UNLOCK: 'unlock',
-  WILL_CHANGE: 'will_change',
-  CHANGE: 'change',
-  WILL_BLUR: 'will_blur',
-  BLUR: 'blur',
-  WILL_FOCUS: 'will_focus',
-  FOCUS: 'focus',
 };
 
 /**
@@ -17,31 +11,16 @@ export const EVENTS = {
  */
 
 export class Navigation {
-  constructor() {
-    /**
-     * @type {{ [name: string]: Navigator }}
-     */
-    this.navigators = {};
-    /**
-     * @type {Array<string>}
-     */
-    this.history = [];
-    this.locked = false;
-    this.lockCounter = 0;
-
-    /**
-     * @param {{ prevId: ?string, nextId: ?string }} param
-     */
-    const willChangeBind = ({ prevId, nextId }) =>
-      this.__willChange(prevId, nextId);
-    this.on(EVENTS.WILL_CHANGE, willChangeBind);
-
-    /**
-     * @param {{ prevId: ?string, nextId: ?string }} param
-     */
-    const changeBind = ({ prevId, nextId }) => this.__change(prevId, nextId);
-    this.on(EVENTS.CHANGE, changeBind);
-  }
+  /**
+   * @type {{ [name: string]: Navigator }}
+   */
+  navigators = {};
+  /**
+   * @type {Array<string>}
+   */
+  history = [];
+  locked = false;
+  lockCounter = 0;
 
   /**
    * @param {string} eventId
@@ -104,15 +83,8 @@ export class Navigation {
     const navigator = this.navigators[newNavigatorName];
     if (!navigator) return Promise.reject();
 
-    const prevId = this.id();
-    const nextId = toId(newNavigatorName, newSceneName);
-
-    this.emit(EVENTS.WILL_CHANGE, { prevId, nextId });
-
     if (newSceneName) await navigator.go(newSceneName, duration);
     this.push(newNavigatorName);
-
-    this.emit(EVENTS.CHANGE, { prevId, nextId });
 
     this.unlock();
 
@@ -132,7 +104,7 @@ export class Navigation {
   };
 
   pop = () => {
-    return this.history.pop();
+    this.history.pop();
   };
 
   /**
@@ -146,29 +118,8 @@ export class Navigation {
     const navigator = this.navigators[this.current()];
     if (!navigator) return Promise.resolve();
 
-    const prevId = this.id();
-
-    const navigatorWillChange = navigator.history.length <= 1;
-
-    const nextNavigator = navigatorWillChange
-      ? this.navigators[this.history[this.history.length - 2]]
-      : navigator;
-
-    const nextId = nextNavigator
-      ? toId(
-          nextNavigator.name,
-          nextNavigator.history[
-            nextNavigator.history.length - (navigatorWillChange ? 1 : 2)
-          ]
-        )
-      : null;
-
-    this.emit(EVENTS.WILL_CHANGE, { prevId, nextId });
-
     await navigator.back(duration);
-    if (navigator.history.length === 0) this.history.pop();
-
-    this.emit(EVENTS.CHANGE, { prevId, nextId });
+    if (navigator.history.length === 0) this.pop();
 
     this.unlock();
 
@@ -190,44 +141,6 @@ export class Navigation {
     const currentScene = this.navigators[currentNavigator].current();
     if (!currentScene) return;
     return toId(currentNavigator, currentScene);
-  };
-
-  /**
-   * @param {string?} prevId
-   * @param {string?} nextId
-   */
-  __willChange = (prevId, nextId) => {
-    if (prevId === nextId) return;
-
-    if (prevId) {
-      this.emit(events.id(EVENTS.WILL_BLUR, prevId), {
-        id: prevId,
-      });
-    }
-    if (nextId) {
-      this.emit(events.id(EVENTS.WILL_FOCUS, nextId), {
-        id: nextId,
-      });
-    }
-  };
-
-  /**
-   * @param {string?} prevId
-   * @param {string?} nextId
-   */
-  __change = (prevId, nextId) => {
-    if (prevId === nextId) return;
-
-    if (prevId) {
-      this.emit(events.id(EVENTS.BLUR, prevId), {
-        id: prevId,
-      });
-    }
-    if (nextId) {
-      this.emit(events.id(EVENTS.FOCUS, nextId), {
-        id: nextId,
-      });
-    }
   };
 }
 

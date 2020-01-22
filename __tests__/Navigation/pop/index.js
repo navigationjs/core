@@ -1,8 +1,6 @@
 import { Navigation } from '../../../src/Navigation';
 import Base from '../../../src/Base';
 
-jest.unmock('@railsmob/events');
-
 describe('Navigation', () => {
   describe('.pop', () => {
     it('should remove last element in history', async () => {
