@@ -10,6 +10,7 @@ describe('navigation', () => {
     expect(EVENTS).toEqual({
       LOCK: 'lock',
       UNLOCK: 'unlock',
+      ID: 'id',
     });
   });
 });

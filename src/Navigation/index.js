@@ -4,6 +4,7 @@ import { toId } from '../helpers';
 export const EVENTS = {
   LOCK: 'lock',
   UNLOCK: 'unlock',
+  ID: 'id',
 };
 
 /**
@@ -84,12 +85,21 @@ export class Navigation {
     if (!navigator) throw null;
 
     const index = this.history.findIndex(it => it === navigatorName);
+
+    const prev = this.id();
     if (index >= 0) this.history.splice(index, 1);
     this.history.push(navigatorName);
+    const id = this.id();
+    // id can be 'undefined'
+    this.emit(events.id(EVENTS.ID, `${id}`), { prev, id });
   };
 
   pop = () => {
+    const prev = this.id();
     this.history.pop();
+    const id = this.id();
+    // id can be 'undefined'
+    this.emit(events.id(EVENTS.ID, `${id}`), { prev, id });
   };
 
   /**

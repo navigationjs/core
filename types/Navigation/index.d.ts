@@ -1,73 +1,78 @@
 export namespace EVENTS {
-    export const LOCK: string;
-    export const UNLOCK: string;
+  export const LOCK: string;
+  export const UNLOCK: string;
+  export const ID: string;
 }
 /**
  * @typedef {import("../Base/Navigator").default} Navigator
  */
 export class Navigation {
-    /**
-     * @type {{ [name: string]: Navigator }}
-     */
-    navigators: {
-        [name: string]: Navigator;
-    };
-    /**
-     * @type {Array<string>}
-     */
-    history: Array<string>;
-    locked: boolean;
-    lockCounter: number;
-    /**
-     * @param {string} eventId
-     * @param {Function} fn
-     */
-    on: (eventId: string, fn: Function) => void;
-    /**
-     * @param {string} eventId
-     * @param {Function} fn
-     */
-    once: (eventId: string, fn: Function) => void;
-    /**
-     * @param {string} eventId
-     * @param {Function} fn
-     */
-    off: (eventId: string, fn: Function) => void;
-    /**
-     * @param {string} eventId
-     * @param {any} [args]
-     */
-    emit: (eventId: string, args?: any) => void;
-    /**
-     * @param {...Navigator} navigators
-     */
-    addNavigators: (...navigators: import("../Base/Navigator").default[]) => void;
-    /**
-     * @param {...string} navigators
-     */
-    removeNavigators: (...navigators: string[]) => void;
-    lock: () => void;
-    unlock: () => void;
-    wait: () => Promise<any>;
-    /**
-     * @param {string} navigatorName
-     */
-    push: (navigatorName: string) => void;
-    pop: () => void;
-    /**
-     * @param {string} navigatorName
-     * @param {string} sceneName
-     * @param {number} duration
-     */
-    go: (navigatorName: string, sceneName: string, duration: number) => Promise<void>;
-    /**
-     * @param {number} duration
-     */
-    back: (duration: number) => Promise<void>;
-    reset: () => Promise<void[]>;
-    current: () => string;
-    id: () => string | undefined;
+  /**
+   * @type {{ [name: string]: Navigator }}
+   */
+  navigators: {
+    [name: string]: Navigator;
+  };
+  /**
+   * @type {Array<string>}
+   */
+  history: Array<string>;
+  locked: boolean;
+  lockCounter: number;
+  /**
+   * @param {string} eventId
+   * @param {Function} fn
+   */
+  on: (eventId: string, fn: Function) => void;
+  /**
+   * @param {string} eventId
+   * @param {Function} fn
+   */
+  once: (eventId: string, fn: Function) => void;
+  /**
+   * @param {string} eventId
+   * @param {Function} fn
+   */
+  off: (eventId: string, fn: Function) => void;
+  /**
+   * @param {string} eventId
+   * @param {any} [args]
+   */
+  emit: (eventId: string, args?: any) => void;
+  /**
+   * @param {...Navigator} navigators
+   */
+  addNavigators: (...navigators: import('../Base/Navigator').default[]) => void;
+  /**
+   * @param {...string} navigators
+   */
+  removeNavigators: (...navigators: string[]) => void;
+  lock: () => void;
+  unlock: () => void;
+  wait: () => Promise<any>;
+  /**
+   * @param {string} navigatorName
+   */
+  push: (navigatorName: string) => void;
+  pop: () => void;
+  /**
+   * @param {string} navigatorName
+   * @param {string} sceneName
+   * @param {number} duration
+   */
+  go: (
+    navigatorName: string,
+    sceneName: string,
+    duration: number
+  ) => Promise<void>;
+  /**
+   * @param {number} duration
+   */
+  back: (duration: number) => Promise<void>;
+  reset: () => Promise<void[]>;
+  current: () => string;
+  id: () => string | undefined;
 }
 declare var _default: Navigation;
 export default _default;
-export type Navigator = import("../Base/Navigator").default;
+export type Navigator = import('../Base/Navigator').default;

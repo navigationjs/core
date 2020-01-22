@@ -9,11 +9,14 @@ declare var EVENTS: typeof npm$namespace$EVENTS;
 
 declare var npm$namespace$EVENTS: {|
   LOCK: typeof EVENTS$LOCK,
-  UNLOCK: typeof EVENTS$UNLOCK
+  UNLOCK: typeof EVENTS$UNLOCK,
+  ID: typeof EVENTS$ID
 |};
 declare export var EVENTS$LOCK: string;
 
 declare export var EVENTS$UNLOCK: string;
+
+declare export var EVENTS$ID: string;
 /**
  * @typedef {$PropertyType<$Exports<"../Base/Navigator">, "default">} Navigator
  */
