@@ -93,20 +93,20 @@ export class Navigation {
   };
 
   /**
-   * @param {string} newNavigatorName
-   * @param {string} newSceneName
+   * @param {string} navigatorName
+   * @param {string} sceneName
    * @param {number} duration
    */
-  go = async (newNavigatorName, newSceneName, duration) => {
+  go = async (navigatorName, sceneName, duration) => {
     if (this.locked) return Promise.resolve();
 
     this.lock();
 
-    const navigator = this.navigators[newNavigatorName];
+    const navigator = this.navigators[navigatorName];
     if (!navigator) return Promise.reject();
 
-    if (newSceneName) await navigator.go(newSceneName, duration);
-    this.push(newNavigatorName);
+    await navigator.go(sceneName, duration);
+    this.push(navigatorName);
 
     this.unlock();
 

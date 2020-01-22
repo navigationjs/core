@@ -9,29 +9,11 @@ declare var EVENTS: typeof npm$namespace$EVENTS;
 
 declare var npm$namespace$EVENTS: {|
   LOCK: typeof EVENTS$LOCK,
-  UNLOCK: typeof EVENTS$UNLOCK,
-  WILL_CHANGE: typeof EVENTS$WILL_CHANGE,
-  CHANGE: typeof EVENTS$CHANGE,
-  WILL_BLUR: typeof EVENTS$WILL_BLUR,
-  BLUR: typeof EVENTS$BLUR,
-  WILL_FOCUS: typeof EVENTS$WILL_FOCUS,
-  FOCUS: typeof EVENTS$FOCUS
+  UNLOCK: typeof EVENTS$UNLOCK
 |};
 declare export var EVENTS$LOCK: string;
 
 declare export var EVENTS$UNLOCK: string;
-
-declare export var EVENTS$WILL_CHANGE: string;
-
-declare export var EVENTS$CHANGE: string;
-
-declare export var EVENTS$WILL_BLUR: string;
-
-declare export var EVENTS$BLUR: string;
-
-declare export var EVENTS$WILL_FOCUS: string;
-
-declare export var EVENTS$FOCUS: string;
 /**
  * @typedef {$PropertyType<$Exports<"../Base/Navigator">, "default">} Navigator
  */
@@ -83,26 +65,31 @@ declare export class Navigation {
   addNavigators: (
     ...navigators: $PropertyType<$Exports<"../Base/Navigator">, "default">[]
   ) => void;
+
+  /**
+   * @param {...string} navigators
+   */
+  removeNavigators: (...navigators: string[]) => void;
   lock: () => void;
   unlock: () => void;
   wait: () => Promise<any>;
 
   /**
-   * @param {string} newNavigatorName
-   * @param {string} newSceneName
-   * @param {number} duration
-   */
-  go: (
-    newNavigatorName: string,
-    newSceneName: string,
-    duration: number
-  ) => Promise<void>;
-
-  /**
    * @param {string} navigatorName
    */
   push: (navigatorName: string) => void;
-  pop: () => string | void;
+  pop: () => void;
+
+  /**
+   * @param {string} navigatorName
+   * @param {string} sceneName
+   * @param {number} duration
+   */
+  go: (
+    navigatorName: string,
+    sceneName: string,
+    duration: number
+  ) => Promise<void>;
 
   /**
    * @param {number} duration
@@ -111,18 +98,6 @@ declare export class Navigation {
   reset: () => Promise<void[]>;
   current: () => string;
   id: () => string | void;
-
-  /**
-   * @param {?string} prevId
-   * @param {?string} nextId
-   */
-  __willChange: (prevId: string | null, nextId: string | null) => void;
-
-  /**
-   * @param {?string} prevId
-   * @param {?string} nextId
-   */
-  __change: (prevId: string | null, nextId: string | null) => void;
 }
 declare var _default: Navigation;
 declare export default typeof _default;
