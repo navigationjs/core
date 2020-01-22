@@ -14,9 +14,9 @@ export default class Navigator {
     [key: string]: Scene;
   };
   /**
-   * @type {Array<string>}
+   * @type {History}
    */
-  history: Array<string>;
+  history: History;
   /**
    * @param {...Scene} scenes
    */
@@ -34,3 +34,4 @@ export default class Navigator {
   reset: () => Promise<void>;
 }
 export type Scene = import('./Scene').default;
+import History from '../History';

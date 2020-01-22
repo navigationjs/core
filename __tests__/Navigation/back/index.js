@@ -28,7 +28,7 @@ describe('Navigation', () => {
       const navigator = new Base.Navigator('navigator');
       navigation.addNavigators(navigator);
       expect.assertions(1);
-      expect(navigation.history).toEqual([]);
+      expect(navigation.history.isEmpty()).toBeTruthy();
       try {
         await navigation.back();
       } catch (e) {
@@ -46,22 +46,6 @@ describe('Navigation', () => {
       navigator.back = jest.fn();
       await navigation.back();
       expect(navigator.back).toHaveBeenCalledTimes(1);
-    });
-
-    it('should remove navigator from history if navigator history is empty', async () => {
-      const navigation = new Navigation();
-      const navigator = new Base.Navigator('navigator');
-      const scene1 = new Base.Scene('scene1');
-      const scene2 = new Base.Scene('scene2');
-      navigator.addScenes(scene1, scene2);
-      navigation.addNavigators(navigator);
-      await navigation.go('navigator', 'scene1');
-      await navigation.go('navigator', 'scene2');
-      expect(navigation.history).toEqual(['navigator']);
-      await navigation.back();
-      expect(navigation.history).toEqual(['navigator']);
-      await navigation.back();
-      expect(navigation.history).toEqual([]);
     });
   });
 });

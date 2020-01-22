@@ -14,9 +14,9 @@ export class Navigation {
     [name: string]: Navigator;
   };
   /**
-   * @type {Array<string>}
+   * @type {History}
    */
-  history: Array<string>;
+  history: History;
   locked: boolean;
   lockCounter: number;
   /**
@@ -72,7 +72,13 @@ export class Navigation {
   reset: () => Promise<void[]>;
   current: () => string;
   id: () => string | undefined;
+  /**
+   * @type {string | undefined}
+   */
+  __id: string | undefined;
+  __onHistoryChange: () => void;
 }
 declare var _default: Navigation;
 export default _default;
 export type Navigator = import('../Base/Navigator').default;
+import History from '../History';

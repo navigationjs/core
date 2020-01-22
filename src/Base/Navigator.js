@@ -1,3 +1,5 @@
+import History from '../History';
+
 /**
  * @typedef { import("./Scene").default } Scene
  */
@@ -13,9 +15,9 @@ export default class Navigator {
      */
     this.scenes = {};
     /**
-     * @type {Array<string>}
+     * @type {History}
      */
-    this.history = [];
+    this.history = new History(this.name);
   }
 
   /**
@@ -25,7 +27,7 @@ export default class Navigator {
     scenes.forEach(it => (this.scenes[it.name] = it));
   };
 
-  current = () => this.history[this.history.length - 1];
+  current = () => this.history.current();
 
   /**
    * @param {string} name
@@ -34,7 +36,7 @@ export default class Navigator {
   go = async (name, duration) => {
     const scene = this.scenes[name];
     if (!scene) return Promise.reject();
-    const alreadyInHistory = this.history.includes(name);
+    const alreadyInHistory = this.history.current() === name;
     if (alreadyInHistory) return Promise.resolve();
     await scene.show(duration);
     this.history.push(name);
@@ -44,7 +46,7 @@ export default class Navigator {
    * @param {number} duration
    */
   back = async duration => {
-    if (this.history.length === 0) return Promise.resolve();
+    if (this.history.isEmpty()) return Promise.resolve();
     const name = this.current();
     const scene = this.scenes[name];
     if (!scene) return Promise.reject();
@@ -56,6 +58,6 @@ export default class Navigator {
     await Promise.all(
       Object.keys(this.scenes).map(key => this.scenes[key].hide(0))
     );
-    this.history = [];
+    this.history = new History(this.name);
   };
 }

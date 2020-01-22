@@ -32,9 +32,9 @@ declare export class Navigation {
   };
 
   /**
-   * @type {Array<string>}
+   * @type {History}
    */
-  history: Array<string>;
+  history: History;
   locked: boolean;
   lockCounter: number;
 
@@ -101,7 +101,14 @@ declare export class Navigation {
   reset: () => Promise<void[]>;
   current: () => string;
   id: () => string | void;
+
+  /**
+   * @type {string | void}
+   */
+  __id: string | void;
+  __onHistoryChange: () => void;
 }
 declare var _default: Navigation;
 declare export default typeof _default;
 export type Navigator = $PropertyType<$Exports<"../Base/Navigator">, "default">;
+import History from "../History";

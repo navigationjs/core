@@ -5,24 +5,13 @@ jest.unmock('@railsmob/events');
 
 describe('Navigation', () => {
   describe('.push', () => {
-    it('should reject if no such navigator', () => {
-      expect.assertions(1);
-      try {
-        const navigation = new Navigation();
-        navigation.push('anything', 'scene');
-      } catch (e) {
-        expect(e).toBeNull();
-      }
-    });
-    it('should add navigator to the end', () => {
+    it('should call history push', () => {
       const navigation = new Navigation();
-      const navigator1 = new Base.Navigator('navigator1');
-      const navigator2 = new Base.Navigator('navigator2');
-      navigation.addNavigators(navigator1, navigator2);
-      navigation.push('navigator1');
-      expect(navigation.history).toEqual(['navigator1']);
-      navigation.push('navigator2');
-      expect(navigation.history).toEqual(['navigator1', 'navigator2']);
+      const navigator1 = new Base.Navigator('navigator');
+      navigation.addNavigators(navigator1);
+      navigation.history.push = jest.fn();
+      navigation.push('navigator');
+      expect(navigation.history.push).toHaveBeenCalledWith('navigator');
     });
 
     it('should remove navigator from history if it was included', () => {
@@ -33,7 +22,7 @@ describe('Navigation', () => {
       navigation.push('navigator1');
       navigation.push('navigator2');
       navigation.push('navigator1');
-      expect(navigation.history).toEqual(['navigator2', 'navigator1']);
+      expect(navigation.history.chain).toEqual(['navigator2', 'navigator1']);
     });
 
     it('should emit id event', async () => {

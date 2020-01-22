@@ -26,9 +26,9 @@ declare export default class Navigator {
   };
 
   /**
-   * @type {Array<string>}
+   * @type {History}
    */
-  history: Array<string>;
+  history: History;
 
   /**
    * @param {...Scene} scenes
@@ -51,3 +51,4 @@ declare export default class Navigator {
   reset: () => Promise<void>;
 }
 export type Scene = $PropertyType<$Exports<"./Scene">, "default">;
+import History from "../History";

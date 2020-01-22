@@ -1,4 +1,5 @@
 import events from '@railsmob/events';
+import History from '../History';
 import { toId } from '../helpers';
 
 export const EVENTS = {
@@ -12,16 +13,20 @@ export const EVENTS = {
  */
 
 export class Navigation {
-  /**
-   * @type {{ [name: string]: Navigator }}
-   */
-  navigators = {};
-  /**
-   * @type {Array<string>}
-   */
-  history = [];
-  locked = false;
-  lockCounter = 0;
+  constructor() {
+    /**
+     * @type {{ [name: string]: Navigator }}
+     */
+    this.navigators = {};
+    /**
+     * @type {History}
+     */
+    this.history = new History('navigation');
+    this.locked = false;
+    this.lockCounter = 0;
+
+    events.on('history_change', this.__onHistoryChange);
+  }
 
   /**
    * @param {string} eventId
@@ -80,27 +85,8 @@ export class Navigation {
   /**
    * @param {string} navigatorName
    */
-  push = navigatorName => {
-    const navigator = this.navigators[navigatorName];
-    if (!navigator) throw null;
-
-    const index = this.history.findIndex(it => it === navigatorName);
-
-    const prev = this.id();
-    if (index >= 0) this.history.splice(index, 1);
-    this.history.push(navigatorName);
-    const id = this.id();
-    // id can be 'undefined'
-    this.emit(events.id(EVENTS.ID, `${id}`), { prev, id });
-  };
-
-  pop = () => {
-    const prev = this.id();
-    this.history.pop();
-    const id = this.id();
-    // id can be 'undefined'
-    this.emit(events.id(EVENTS.ID, `${id}`), { prev, id });
-  };
+  push = navigatorName => this.history.push(navigatorName);
+  pop = () => this.history.pop();
 
   /**
    * @param {string} navigatorName
@@ -135,7 +121,7 @@ export class Navigation {
     if (!navigator) return Promise.resolve();
 
     await navigator.back(duration);
-    if (navigator.history.length === 0) this.pop();
+    if (navigator.history.isEmpty()) this.pop();
 
     this.unlock();
 
@@ -143,20 +129,33 @@ export class Navigation {
   };
 
   reset = () => {
-    this.history = [];
+    this.history = new History('navigation');
     return Promise.all(
       Object.keys(this.navigators).map(name => this.navigators[name].reset())
     );
   };
 
-  current = () => this.history[this.history.length - 1];
+  current = () => this.history.current();
 
   id = () => {
     const currentNavigator = this.current();
-    if (!currentNavigator) return;
+    if (!currentNavigator || !this.navigators[currentNavigator]) return;
     const currentScene = this.navigators[currentNavigator].current();
     if (!currentScene) return;
     return toId(currentNavigator, currentScene);
+  };
+
+  /**
+   * @type {string | undefined}
+   */
+  __id = undefined;
+  __onHistoryChange = () => {
+    const id = this.id();
+    if (this.__id !== id) {
+      // id can be 'undefined'
+      this.emit(events.id(EVENTS.ID, `${id}`), { prev: this.__id, id });
+      this.__id = id;
+    }
   };
 }
 

@@ -5,15 +5,16 @@ jest.unmock('@railsmob/events');
 
 describe('Navigation', () => {
   describe('.pop', () => {
-    it('should remove last element in history', async () => {
+    it('should call history pop', async () => {
       const navigation = new Navigation();
       const navigator = new Base.Navigator('navigator');
       navigator.addScenes(new Base.Scene('scene'));
       navigation.addNavigators(navigator);
       await navigation.go('navigator', 'scene');
-      expect(navigation.history).toEqual(['navigator']);
+      expect(navigation.history.chain).toEqual(['navigator']);
+      navigation.history.pop = jest.fn();
       navigation.pop();
-      expect(navigation.history).toEqual([]);
+      expect(navigation.history.pop).toHaveBeenCalledTimes(1);
     });
 
     it('should emit id event', async () => {

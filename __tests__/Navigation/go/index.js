@@ -33,29 +33,15 @@ describe('Navigation', () => {
       }
     });
 
-    it('should add navigator to history', async () => {
+    it('should call history push', async () => {
       const navigation = new Navigation();
       const navigator = new Base.Navigator('navigator');
       const scene = new Base.Scene('scene');
       navigator.addScenes(scene);
       navigation.addNavigators(navigator);
+      navigation.history.push = jest.fn();
       await navigation.go('navigator', 'scene');
-      expect(navigation.history).toEqual(['navigator']);
-    });
-
-    it('should move navigator to the end in history if it is already exist', async () => {
-      const navigation = new Navigation();
-      const navigator1 = new Base.Navigator('navigator1');
-      const navigator2 = new Base.Navigator('navigator2');
-      const scene1 = new Base.Scene('scene1');
-      const scene2 = new Base.Scene('scene2');
-      navigator1.addScenes(scene1);
-      navigator2.addScenes(scene2);
-      navigation.addNavigators(navigator1, navigator2);
-      await navigation.go('navigator1', 'scene1');
-      await navigation.go('navigator2', 'scene2');
-      await navigation.go('navigator1', 'scene1');
-      expect(navigation.history).toEqual(['navigator2', 'navigator1']);
+      expect(navigation.history.push).toHaveBeenCalledWith('navigator');
     });
 
     it('should run go on the navigator', async () => {
@@ -76,9 +62,9 @@ describe('Navigation', () => {
       navigator.addScenes(scene);
       navigation.addNavigators(navigator);
       const promise = navigation.go('navigator', 'scene');
-      expect(navigation.history).toEqual([]);
+      expect(navigation.history.isEmpty()).toBeTruthy();
       await promise;
-      expect(navigation.history).toEqual(['navigator']);
+      expect(navigation.history.chain).toEqual(['navigator']);
     });
   });
 });

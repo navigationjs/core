@@ -14,9 +14,9 @@ describe('Navigation', () => {
       navigation.addNavigators(navigator1, navigator2);
       await navigation.go('navigator1', 'scene1');
       await navigation.go('navigator2', 'scene2');
-      expect(navigation.history).toEqual(['navigator1', 'navigator2']);
+      expect(navigation.history.chain).toEqual(['navigator1', 'navigator2']);
       await navigation.reset();
-      expect(navigation.history).toEqual([]);
+      expect(navigation.history.chain).toEqual([]);
     });
 
     it('should invoke reset on each navigator', async () => {
