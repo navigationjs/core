@@ -49,6 +49,12 @@ export class Navigation {
   addNavigators = (...navigators) =>
     navigators.forEach(it => (this.navigators[it.name] = it));
 
+  /**
+   * @param {...string} navigators
+   */
+  removeNavigators = (...navigators) =>
+    navigators.forEach(it => delete this.navigators[it]);
+
   lock = () => {
     this.locked = true;
     this.lockCounter++;
@@ -71,6 +77,22 @@ export class Navigation {
   };
 
   /**
+   * @param {string} navigatorName
+   */
+  push = navigatorName => {
+    const navigator = this.navigators[navigatorName];
+    if (!navigator) throw null;
+
+    const index = this.history.findIndex(it => it === navigatorName);
+    if (index >= 0) this.history.splice(index, 1);
+    this.history.push(navigatorName);
+  };
+
+  pop = () => {
+    this.history.pop();
+  };
+
+  /**
    * @param {string} newNavigatorName
    * @param {string} newSceneName
    * @param {number} duration
@@ -89,22 +111,6 @@ export class Navigation {
     this.unlock();
 
     return Promise.resolve();
-  };
-
-  /**
-   * @param {string} navigatorName
-   */
-  push = navigatorName => {
-    const navigator = this.navigators[navigatorName];
-    if (!navigator) throw null;
-
-    const index = this.history.findIndex(it => it === navigatorName);
-    if (index >= 0) this.history.splice(index, 1);
-    this.history.push(navigatorName);
-  };
-
-  pop = () => {
-    this.history.pop();
   };
 
   /**
