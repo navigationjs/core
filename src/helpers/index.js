@@ -4,7 +4,8 @@ const separator = '/';
  * @param {string} scene
  * @return {string}
  */
-export const toId = (navigator, scene) => navigator + separator + scene;
+export const toId = (navigator, scene) =>
+  navigator + (scene ? separator + scene : '');
 /**
  * @param {string} id
  */

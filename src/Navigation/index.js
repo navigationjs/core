@@ -141,7 +141,6 @@ export class Navigation {
     const currentNavigator = this.current();
     if (!currentNavigator || !this.navigators[currentNavigator]) return;
     const currentScene = this.navigators[currentNavigator].current();
-    if (!currentScene) return;
     return toId(currentNavigator, currentScene);
   };
 
@@ -152,9 +151,10 @@ export class Navigation {
   __onHistoryChange = () => {
     const id = this.id();
     if (this.__id !== id) {
-      // id can be 'undefined'
-      this.emit(events.id(EVENTS.ID, `${id}`), { prev: this.__id, id });
+      const prev = this.__id;
       this.__id = id;
+      // id can be 'undefined'
+      this.emit(events.id(EVENTS.ID, `${id}`), { prev, id });
     }
   };
 }
