@@ -1,6 +1,6 @@
 import events from '@railsmob/events';
 import History from '../History';
-import { toId } from '../helpers';
+import { toId, fromId } from '../helpers';
 
 export const EVENTS = {
   LOCK: 'lock',
@@ -142,6 +142,28 @@ export class Navigation {
     if (!currentNavigator || !this.navigators[currentNavigator]) return;
     const currentScene = this.navigators[currentNavigator].current();
     return toId(currentNavigator, currentScene);
+  };
+
+  /**
+   * @param {string} id
+   * @param {string} navigatorName
+   */
+  pass = (id, navigatorName) => {
+    this.on(
+      `id:${id}`,
+      /**
+       * @param {{ prev: string | undefined }} args
+       */
+      async ({ prev }) => {
+        if (prev) {
+          const [prevNavigatorName] = fromId(prev);
+          if (prevNavigatorName === navigatorName) return;
+        }
+
+        await this.wait();
+        this.push(navigatorName);
+      }
+    );
   };
 
   /**

@@ -73,6 +73,11 @@ export class Navigation {
   current: () => string;
   id: () => string | undefined;
   /**
+   * @param {string} id
+   * @param {string} navigatorName
+   */
+  pass: (id: string, navigatorName: string) => void;
+  /**
    * @type {string | undefined}
    */
   __id: string | undefined;

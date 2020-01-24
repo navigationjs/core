@@ -103,6 +103,12 @@ declare export class Navigation {
   id: () => string | void;
 
   /**
+   * @param {string} id
+   * @param {string} navigatorName
+   */
+  pass: (id: string, navigatorName: string) => void;
+
+  /**
    * @type {string | void}
    */
   __id: string | void;
