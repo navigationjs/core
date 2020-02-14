@@ -1,6 +1,6 @@
 {
   "name": "@navigationjs/core",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Small and well-tested navigation",
   "main": "lib/index.js",
   "unpkg": "dist/index.js",
@@ -56,6 +56,6 @@
     "testEnvironment": "node"
   },
   "dependencies": {
-    "@railsmob/events": "0.1.11"
+    "@railsmob/events": "0.2.0"
   }
 }
