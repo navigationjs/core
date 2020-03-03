@@ -5,20 +5,17 @@ export const EVENTS = {
   VALUE: 'value',
 };
 
-const defaultDuration = 0;
 let id = 0;
 
 export default class Value {
   /**
    * @param {string} name
    * @param {number} [value=0]
-   * @param {number} [duration=0]
    */
-  constructor(name, value = 0, duration = defaultDuration) {
+  constructor(name, value = 0) {
     this.__id = ++id;
     this.name = name;
     this.value = value;
-    this.duration = duration;
   }
 
   /**
@@ -41,14 +38,12 @@ export default class Value {
 
   /**
    * @param {number} value
-   * @param {number} [duration=0]
    */
-  to = (value, duration = this.duration) => {
+  to = value => {
     const params = {
       __id: this.__id,
       name: this.name,
       value,
-      duration,
     };
 
     this.emit(EVENTS.WILL_VALUE, params);

@@ -18,17 +18,11 @@ declare export default class Value {
   /**
    * @param {string} name
    * @param {number} [value]
-   * @param {number} [duration]
    */
-  constructor(
-    name: string,
-    value?: number | void,
-    duration?: number | void
-  ): this;
+  constructor(name: string, value?: number | void): this;
   __id: number;
   name: string;
   value: number;
-  duration: number;
 
   /**
    * @param {string} eventName
@@ -50,7 +44,6 @@ declare export default class Value {
 
   /**
    * @param {number} value
-   * @param {number} [duration]
    */
-  to: (value: number, duration?: number | void) => Promise<any>;
+  to: (value: number) => Promise<any>;
 }

@@ -91,9 +91,8 @@ export class Navigation {
   /**
    * @param {string} navigatorName
    * @param {string} sceneName
-   * @param {number} duration
    */
-  go = async (navigatorName, sceneName, duration) => {
+  go = async (navigatorName, sceneName) => {
     if (this.locked) return Promise.resolve();
 
     this.lock();
@@ -101,7 +100,7 @@ export class Navigation {
     const navigator = this.navigators[navigatorName];
     if (!navigator) return Promise.reject();
 
-    await navigator.go(sceneName, duration);
+    await navigator.go(sceneName);
     this.push(navigatorName);
 
     this.unlock();
@@ -109,10 +108,7 @@ export class Navigation {
     return Promise.resolve();
   };
 
-  /**
-   * @param {number} duration
-   */
-  back = async duration => {
+  back = async () => {
     if (this.locked) return Promise.resolve();
 
     this.lock();
@@ -120,7 +116,7 @@ export class Navigation {
     const navigator = this.navigators[this.current()];
     if (!navigator) return Promise.resolve();
 
-    await navigator.back(duration);
+    await navigator.back();
     if (navigator.history.isEmpty()) this.pop();
 
     this.unlock();

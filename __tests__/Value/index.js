@@ -29,16 +29,10 @@ describe('Value', () => {
       expect(value.value).toBe(0);
     });
 
-    it('should assign default duration', () => {
-      const value = new Value();
-      expect(value.duration).toBe(0);
-    });
-
-    it('should accept name, value and duration', () => {
+    it('should accept name, value', () => {
       const value = new Value('active', 123, 456);
       expect(value.name).toBe('active');
       expect(value.value).toBe(123);
-      expect(value.duration).toBe(456);
     });
   });
 
@@ -95,7 +89,6 @@ describe('Value', () => {
         __id: value.__id,
         name: 'active',
         value: 123,
-        duration: 456,
       };
       expect(value.emit).toHaveBeenCalledTimes(2);
       expect(value.emit).toHaveBeenCalledWith('will_value', params);

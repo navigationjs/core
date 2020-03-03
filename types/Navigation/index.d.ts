@@ -58,17 +58,9 @@ export class Navigation {
   /**
    * @param {string} navigatorName
    * @param {string} sceneName
-   * @param {number} duration
    */
-  go: (
-    navigatorName: string,
-    sceneName: string,
-    duration: number
-  ) => Promise<void>;
-  /**
-   * @param {number} duration
-   */
-  back: (duration: number) => Promise<void>;
+  go: (navigatorName: string, sceneName: string) => Promise<void>;
+  back: () => Promise<void>;
   reset: () => Promise<void[]>;
   current: () => string;
   id: () => string | undefined;

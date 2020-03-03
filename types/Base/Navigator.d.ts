@@ -24,13 +24,9 @@ export default class Navigator {
   current: () => string;
   /**
    * @param {string} name
-   * @param {number} duration
    */
-  go: (name: string, duration: number) => Promise<void>;
-  /**
-   * @param {number} duration
-   */
-  back: (duration: number) => Promise<void>;
+  go: (name: string) => Promise<void>;
+  back: () => Promise<void>;
   reset: () => Promise<void>;
 }
 export type Scene = import('./Scene').default;

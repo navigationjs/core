@@ -6,17 +6,11 @@ export default class Value {
   /**
    * @param {string} name
    * @param {number} [value=0]
-   * @param {number} [duration=0]
    */
-  constructor(
-    name: string,
-    value?: number | undefined,
-    duration?: number | undefined
-  );
+  constructor(name: string, value?: number | undefined);
   __id: number;
   name: string;
   value: number;
-  duration: number;
   /**
    * @param {string} eventName
    * @param {any} args
@@ -34,7 +28,6 @@ export default class Value {
   off: (eventName: string, fn: Function) => void;
   /**
    * @param {number} value
-   * @param {number} [duration=0]
    */
-  to: (value: number, duration?: number | undefined) => Promise<any>;
+  to: (value: number) => Promise<any>;
 }

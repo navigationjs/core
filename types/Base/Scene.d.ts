@@ -8,13 +8,7 @@ export default class Scene {
    */
   name: string;
   active: Value;
-  /**
-   * @param {number} duration
-   */
-  show: (duration: number) => Promise<any>;
-  /**
-   * @param {number} duration
-   */
-  hide: (duration: number) => Promise<any>;
+  show: () => Promise<any>;
+  hide: () => Promise<any>;
 }
 import Value from '../Value';

@@ -31,32 +31,28 @@ export default class Navigator {
 
   /**
    * @param {string} name
-   * @param {number} duration
    */
-  go = async (name, duration) => {
+  go = async name => {
     const scene = this.scenes[name];
     if (!scene) return Promise.reject();
     const alreadyInHistory = this.history.current() === name;
     if (alreadyInHistory) return Promise.resolve();
-    await scene.show(duration);
+    await scene.show();
     this.history.push(name);
   };
 
-  /**
-   * @param {number} duration
-   */
-  back = async duration => {
+  back = async () => {
     if (this.history.isEmpty()) return Promise.resolve();
     const name = this.current();
     const scene = this.scenes[name];
     if (!scene) return Promise.reject();
-    await scene.hide(duration);
+    await scene.hide();
     this.history.pop();
   };
 
   reset = async () => {
     await Promise.all(
-      Object.keys(this.scenes).map(key => this.scenes[key].hide(0))
+      Object.keys(this.scenes).map(key => this.scenes[key].hide())
     );
     this.history = new History(this.name);
   };
