@@ -87,6 +87,7 @@ describe('Value', () => {
       await value.to(123, 456);
       const params = {
         __id: value.__id,
+        duration: 456,
         name: 'active',
         value: 123,
       };

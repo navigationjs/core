@@ -13,6 +13,13 @@ export default class Scene {
     this.active = new Value('active');
   }
 
-  show = () => this.active.to(1);
-  hide = () => this.active.to(0);
+  /**
+   * @param {number|undefined} duration
+   */
+  show = duration => this.active.to(1, duration);
+
+  /**
+   * @param {number|undefined} duration
+   */
+  hide = duration => this.active.to(0, duration);
 }

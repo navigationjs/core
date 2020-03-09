@@ -11,11 +11,13 @@ export default class Value {
   /**
    * @param {string} name
    * @param {number} [value=0]
+   * @param {number|undefined} [duration=0]
    */
-  constructor(name, value = 0) {
+  constructor(name, value = 0, duration = 0) {
     this.__id = ++id;
     this.name = name;
     this.value = value;
+    this.duration = duration;
   }
 
   /**
@@ -39,10 +41,11 @@ export default class Value {
   /**
    * @param {number} value
    */
-  to = value => {
+  to = (value, duration = 0) => {
     const params = {
       __id: this.__id,
       name: this.name,
+      duration,
       value,
     };
 
